@@ -9,3 +9,8 @@ Git Action / AWS / Terraform 사용 예정
 
 # 구성 순서도
 
+1. Git Action과 AWS 계정간의 연동 진행 및 deploy.yaml 파일 작성을 통하여 AWS 인스턴스 배포 코드 작성
+
+2. AWS에 배포하고자 하는 인스턴스에 대한 코드 작성 (main.tf variables.tf)
+
+ 
