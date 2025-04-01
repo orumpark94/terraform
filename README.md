@@ -1,5 +1,5 @@
 
-# Terraform을 이용하여 AWS에 EC2 인스턴스를 생성하고 서비스 배포
+# AWS에 Terraform을 이용하여 EC2 인스턴스 생성 및 웹서버(Nginx) 배포
 
 # 구성 목표
 
