@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.region
+  region = "ap-northeast-2"  
 }
 
 resource "aws_instance" "minimal" {
