@@ -1,11 +1,11 @@
 variable "region" {
-  default = "ap-northeast-2"  
+  default = "ap-northeast-2"
 }
 
 variable "ami_id" {
-  default = "ami-0fa377108253bf620"
+  default = "ami-0c55b159cbfafe1f0"
 }
 
 variable "instance_type" {
-  default = "t2.micro"  
+  default = "t2.micro"
 }
