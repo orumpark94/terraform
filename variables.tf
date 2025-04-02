@@ -1,5 +1,4 @@
-variable "access_key" {}
-variable "secret_key" {}
+# access_key와 secret_key는 GitHub Actions 환경변수로 대체되므로 변수 제거
 
 variable "region" {
   default = "ap-northeast-2"  
