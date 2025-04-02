@@ -30,4 +30,4 @@ jobs:
         run: terraform plan -out=tfplan && terraform show -no-color tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve -out=tfplan && terraform show -no-color tfplan
