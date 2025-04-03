@@ -34,6 +34,11 @@ jobs:
         with:
           name: terraform-state
 
+      - name: Move downloaded terraform.tfstate
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: |
+          mv terraform-state/terraform.tfstate terraform.tfstate
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
