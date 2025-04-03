@@ -1,16 +1,9 @@
 name: Terraform AWS Deploy
 
 on:
-  workflow_dispatch:
-    inputs:
-      action:
-        description: "Choose Terraform Action"
-        required: true
-        default: "apply"
-        type: choice
-        options:
-          - apply
-          - destroy
+  push:
+    branches:
+      - main
 
 jobs:
   terraform:
@@ -27,18 +20,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 🔽 상태 파일 복원 (destroy 시만)
-      - name: Download terraform state (for destroy)
-        if: ${{ github.event.inputs.action == 'destroy' }}
-        uses: actions/download-artifact@v4
-        with:
-          name: terraform-state
-
-      - name: Move downloaded terraform.tfstate
-        if: ${{ github.event.inputs.action == 'destroy' }}
-        run: |
-          mv terraform-state/terraform.tfstate terraform.tfstate
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -47,25 +28,11 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Plan (apply only)
-        if: ${{ github.event.inputs.action == 'apply' }}
+      - name: Terraform Plan
         run: terraform plan -out=tfplan && terraform show -no-color tfplan
 
       - name: Terraform Apply
-        if: ${{ github.event.inputs.action == 'apply' }}
         run: terraform apply -auto-approve tfplan
-
-      # 🔼 상태 파일 저장 (apply 시만)
-      - name: Upload terraform state (after apply)
-        if: ${{ github.event.inputs.action == 'apply' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: terraform-state
-          path: terraform.tfstate
-
-      - name: Terraform Destroy
-        if: ${{ github.event.inputs.action == 'destroy' }}
-        run: terraform destroy -auto-approve
 
       - name: Show Terraform Debug Log
         if: always()
