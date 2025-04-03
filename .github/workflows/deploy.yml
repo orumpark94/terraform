@@ -1,9 +1,16 @@
 name: Terraform AWS Deploy
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Choose Terraform Action"
+        required: true
+        default: "apply"
+        type: choice
+        options:
+          - apply
+          - destroy
 
 jobs:
   terraform:
@@ -28,11 +35,17 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Plan
+      - name: Terraform Plan (apply only)
+        if: ${{ github.event.inputs.action == 'apply' }}
         run: terraform plan -out=tfplan && terraform show -no-color tfplan
 
       - name: Terraform Apply
+        if: ${{ github.event.inputs.action == 'apply' }}
         run: terraform apply -auto-approve tfplan
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: terraform destroy -auto-approve
 
       - name: Show Terraform Debug Log
         if: always()
