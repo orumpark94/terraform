@@ -1,15 +1,15 @@
 name: Terraform AWS Deploy
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'infrastructure/**'  # 이 디렉토리 안의 파일이 수정될 때만 실행
+  workflow_run:
+    workflows: ["Create Terraform Backend S3"]  # ✅ 스크린샷과 정확히 일치
+    types:
+      - completed
 
 jobs:
   terraform:
     name: 'Terraform Deploy'
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ap-northeast-2
