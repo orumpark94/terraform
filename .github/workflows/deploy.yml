@@ -27,6 +27,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 🔽 상태 파일 복원 (destroy 시만)
+      - name: Download terraform state (for destroy)
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-state
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -42,6 +49,14 @@ jobs:
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
         run: terraform apply -auto-approve tfplan
+
+      # 🔼 상태 파일 저장 (apply 시만)
+      - name: Upload terraform state (after apply)
+        if: ${{ github.event.inputs.action == 'apply' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-state
+          path: terraform.tfstate
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
