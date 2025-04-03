@@ -1,15 +1,13 @@
-name: Terraform AWS Deploy
+name: Create Terraform Backend S3
 
 on:
   push:
-    branches:
-      - main
     paths:
-      - 'infrastructure/**'  # 이 디렉토리 안의 파일이 수정될 때만 실행
+      - 'backend-s3/**'   # ✅ backend-s3 디렉토리 수정 시에만 실행됨
 
 jobs:
-  terraform:
-    name: 'Terraform Deploy'
+  create-backend:
+    name: 'Terraform Backend Create'
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ap-northeast-2
@@ -29,18 +27,13 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd infrastructure
+          cd backend-s3
           terraform init
-
-      - name: Terraform Plan
-        run: |
-          cd infrastructure
-          terraform plan -out=tfplan && terraform show -no-color tfplan
 
       - name: Terraform Apply
         run: |
-          cd infrastructure
-          terraform apply -auto-approve tfplan
+          cd backend-s3
+          terraform apply -auto-approve
 
       - name: Show Terraform Debug Log
         if: always()
