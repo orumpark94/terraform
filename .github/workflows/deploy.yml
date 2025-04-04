@@ -1,15 +1,16 @@
 name: Terraform AWS Deploy
 
 on:
-  workflow_run:
-    workflows: ["Create Terraform Backend S3"]  # ✅ 스크린샷과 정확히 일치
-    types:
-      - completed
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Terraform Action (apply or destroy)'
+        required: true
+        default: 'apply'
 
 jobs:
   terraform:
     name: 'Terraform Deploy'
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ap-northeast-2
@@ -33,14 +34,22 @@ jobs:
           terraform init
 
       - name: Terraform Plan
+        if: ${{ github.event.inputs.action == 'apply' }}
         run: |
           cd infrastructure
           terraform plan -out=tfplan && terraform show -no-color tfplan
 
       - name: Terraform Apply
+        if: ${{ github.event.inputs.action == 'apply' }}
         run: |
           cd infrastructure
           terraform apply -auto-approve tfplan
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: |
+          cd infrastructure
+          terraform destroy -auto-approve
 
       - name: Show Terraform Debug Log
         if: always()
