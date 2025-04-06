@@ -163,3 +163,4 @@ resource "aws_db_instance" "mysql" {
   }
 }
 
+# DB PASSWORD = my_secure_password
