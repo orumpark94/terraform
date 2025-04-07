@@ -14,6 +14,8 @@ resource "aws_vpc" "main" {
 }
 
 # 2. Subnets
+
+# Public Subnet (EC2 용도)
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnet_cidr
@@ -25,6 +27,7 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
+# Private Subnet 1 (RDS 용도)
 resource "aws_subnet" "private_subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.private_subnet_cidr
@@ -32,7 +35,19 @@ resource "aws_subnet" "private_subnet" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "private-subnet"
+    Name = "private-subnet-1"
+  }
+}
+
+# Private Subnet 2 (RDS 용도 - AZ 2개 커버)
+resource "aws_subnet" "private_subnet_2" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.private_subnet_cidr_2
+  availability_zone       = var.availability_zone_2
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "private-subnet-2"
   }
 }
 
@@ -66,7 +81,7 @@ resource "aws_route_table_association" "public_assoc" {
 
 # 5. 보안 그룹
 
-## Web용 SG
+## Web용 SG (EC2)
 resource "aws_security_group" "web_sg" {
   name   = "web-sg"
   vpc_id = aws_vpc.main.id
@@ -97,7 +112,7 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-## DB용 SG
+## DB용 SG (RDS)
 resource "aws_security_group" "db_sg" {
   name   = "db-sg"
   vpc_id = aws_vpc.main.id
@@ -106,7 +121,7 @@ resource "aws_security_group" "db_sg" {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
-    security_groups = [aws_security_group.web_sg.id] # Web SG로부터만 허용
+    security_groups = [aws_security_group.web_sg.id] # EC2에서만 접근 허용
   }
 
   egress {
@@ -134,10 +149,13 @@ resource "aws_instance" "web_instance" {
   }
 }
 
-# 7. DB Subnet Group
+# 7. DB Subnet Group (AZ 2개 이상 커버)
 resource "aws_db_subnet_group" "db_subnet_group" {
   name       = "db-subnet-group"
-  subnet_ids = [aws_subnet.private_subnet.id]
+  subnet_ids = [
+    aws_subnet.private_subnet.id,
+    aws_subnet.private_subnet_2.id
+  ]
 
   tags = {
     Name = "db-subnet-group"
@@ -162,5 +180,3 @@ resource "aws_db_instance" "mysql" {
     Name = "rds-mysql"
   }
 }
-
-# DB PASSWORD = my_secure_password

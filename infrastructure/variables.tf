@@ -21,7 +21,6 @@ variable "vpc_cidr" {
   default = "10.0.0.0/16"
 }
 
-# 기존 subnet_cidr는 제거하고 아래 두 개로 분리
 variable "public_subnet_cidr" {
   default = "10.0.1.0/24"
 }
@@ -32,6 +31,15 @@ variable "private_subnet_cidr" {
 
 variable "availability_zone" {
   default = "ap-northeast-2a"
+}
+
+# ✅ 새로 추가된 두 번째 프라이빗 서브넷을 위한 변수
+variable "private_subnet_cidr_2" {
+  default = "10.0.3.0/24"
+}
+
+variable "availability_zone_2" {
+  default = "ap-northeast-2c"
 }
 
 # RDS 설정
