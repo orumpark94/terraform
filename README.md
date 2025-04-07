@@ -1,9 +1,9 @@
 
-# AWS에 Terraform을 이용하여 EC2 인스턴스 및 네트워크 설정 생성
+# AWS에 Terraform을 이용하여 EC2 및 RDS 생성 네트워크 구성 TEST
 
 # 구성 목표
 
-Git Action을 이용하여 AWS 인스턴스를 구축하는 것을 목적으로 한다.
+Git Action,Terraform을 이용하여 AWS 인스턴스를 구축하는 것을 목적으로 한다.
 
 Git Action / AWS / Terraform 사용 예정
 
@@ -12,9 +12,7 @@ Git Action / AWS / Terraform 사용 예정
 
 # 구성 순서도
 
-1. Git Action과 AWS 계정간의 연동 진행 및 deploy.yaml 파일 작성을 통하여 AWS 인스턴스 배포 코드 작성
-
-2. AWS에 배포하고자 하는 인스턴스에 대한 코드 작성 (main.tf variables.tf)
+1. Git Action과 AWS 계정간의 연동 진행 및 인스턴스 배포를 위한 code 작성을 통하여 AWS 인스턴스 배포
 
 # 실행 결과
 
