@@ -32,10 +32,11 @@ Git Action / AWS / Terraform 사용 예정
 # 주의 사항
 
 1. 기본적으로 GitHub에서 Action으로 실행되는 task는 Github가 제공하는 VM머신에서 실행되며 해당 VM 머신은 사용된 후 삭제되기에 #terraform destroy 같은 명령을 실행할 수 없다.
-이유는 VM 머신이 실행된 후 자동 삭제 되기에 Terraform의 상태 파일인 terraform.tfstate 또한 삭제되기는 것이 원인이이다.  
+이유는 VM 머신이 실행된 후 자동 삭제 되기에 Terraform의 상태 파일인 terraform.tfstate 또한 삭제되기는 것이 원인이이다.
+이 문제를 해결하기 위하여 S3 버킷을 사용하여 terraform.tfstate를 저장하였고, 이를 이용하여 destroy도 가능하게 끔 설정하였다.
 
-2. web 서버의 경우 외부에 노출되는 public subnet으로 구성하였다, db의 경우는 외부에 노출되면 안되기에 별도의 private subnet으로 구성하였고, RDS의 경우에는 가용성 확보를 위한 리전 이중화 및 서브넷 이중화를 적용해야지만 생성된다.
+3. web 서버의 경우 외부에 노출되는 public subnet으로 구성하였다, db의 경우는 외부에 노출되면 안되기에 별도의 private subnet으로 구성하였고, RDS의 경우에는 가용성 확보를 위한 리전 이중화 및 서브넷 이중화를 적용해야지만 생성된다.
 
-3. 현재 구성의 경우 단순 test이기에 권한을 넉넉하게 줬지만, 기본적으로 db에 관련된 구성을할때는 각 iam 사용자별 권한에 대한 설정을 제대로 구성하여야 한다.
+4. 현재 구성의 경우 단순 test이기에 권한을 넉넉하게 줬지만, 기본적으로 db에 관련된 구성을할때는 각 iam 사용자별 권한에 대한 설정을 제대로 구성하여야 한다.
 
    
