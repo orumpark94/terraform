@@ -11,8 +11,9 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "key_name" {
-  description = "EC2 인스턴스에 접속할 때 사용할 키 페어 이름"
+# ✅ 공개키 값 전달용 변수 (GitHub Actions에서 -var="public_key=..." 형태로 전달됨)
+variable "public_key" {
+  description = "EC2에 등록할 SSH 공개키 값 (.pub 파일 내용)"
   type        = string
 }
 
@@ -33,7 +34,7 @@ variable "availability_zone" {
   default = "ap-northeast-2a"
 }
 
-# ✅ 새로 추가된 두 번째 프라이빗 서브넷을 위한 변수
+# 두 번째 프라이빗 서브넷
 variable "private_subnet_cidr_2" {
   default = "10.0.3.0/24"
 }
