@@ -136,19 +136,13 @@ resource "aws_security_group" "db_sg" {
   }
 }
 
-# ✅ SSH 공개키를 등록하는 Key Pair 리소스
-resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
-  public_key = var.public_key
-}
-
 # 6. EC2 (Web/App)
 resource "aws_instance" "web_instance" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.web_sg.id]
-  key_name               = aws_key_pair.deployer.key_name
+  key_name               = var.key_name
 
   tags = {
     Name = "web-instance"
@@ -177,7 +171,7 @@ resource "aws_db_instance" "mysql" {
   allocated_storage       = 20
   username                = "admin"
   password                = var.db_password
-  db_name                 = "mydatabase"
+  db_name                    = "mydatabase"
   skip_final_snapshot     = true
   db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids  = [aws_security_group.db_sg.id]
