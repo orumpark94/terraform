@@ -19,3 +19,13 @@ output "rds_port" {
   description = "RDS 인스턴스의 포트"
   value       = aws_db_instance.mysql.port
 }
+
+output "rds_db_name" {
+  description = "RDS 데이터베이스 이름"
+  value       = aws_db_instance.mysql.db_name
+}
+
+output "rds_username" {
+  description = "RDS 접속 사용자 이름"
+  value       = aws_db_instance.mysql.username
+}
