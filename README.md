@@ -11,8 +11,8 @@ Git Action / AWS / Terraform 사용 예정
 
 # 사용 기술 스택
 
-CI/CD: GitHub Actions, Terraform
-인프라: AWS EC2, VPC, RDS
+- **CI/CD**: GitHub Actions, Terraform
+- **인프라**: AWS EC2, VPC, RDS
 
 # 구성 순서도
 
