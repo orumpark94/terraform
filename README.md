@@ -9,6 +9,10 @@ Git Action / AWS / Terraform 사용 예정
 
 ![image](https://github.com/user-attachments/assets/4f117912-c256-4eb9-8759-90084aeafe10)
 
+# 사용 기술 스택
+
+CI/CD: GitHub Actions, Terraform
+인프라: AWS EC2, VPC, RDS
 
 # 구성 순서도
 
